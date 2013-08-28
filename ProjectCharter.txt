@@ -15,7 +15,7 @@ Project Objectives:
 	4. Enhance users' analytical skills and creativity
 
 Stakeholders: 
-The stakeholders are the users of the game.
+	The stakeholders are the users of the game.
 
 Project Deliverables:
 	A program that will generate a maze type level that a user can navigate
