@@ -21,4 +21,6 @@ Project Deliverables:
 	A program that will generate a maze type level that a user can navigate
 	through trying to pick up items and solve puzzles along the way, while
 	avoiding obstacles. The game will also keep track of your score.
+    
+    
 
