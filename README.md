@@ -1,4 +1,12 @@
-CS408 README
+Dungeon Explorer
+================
+
+Team members:
+-------------
+
+
+README:
+-------
 
 Repository location:
 https://github.com/puteam13/cs408/
