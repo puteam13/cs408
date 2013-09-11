@@ -1,8 +1,8 @@
 Dungeon Explorer
 ================
 
-Team members: (ordered by last name)
-------------------------------------
+Team members:
+-------------
 Xinpi Du, Art Malinin, Wei Haow Tan, Jun Xiang Tee, Matt Walters, Lirong Yuan
 
 Readme:
