@@ -5,8 +5,8 @@ Team members:
 -------------
 Xinpi Du, Art Malinin, Wei Haow Tan, Jun Xiang Tee, Matt Walters, Lirong Yuan
 
-Readme:
--------
+File locations:
+---------------
 
 Repository location:
 https://github.com/puteam13/cs408/
