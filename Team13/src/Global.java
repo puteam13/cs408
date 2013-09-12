@@ -10,9 +10,9 @@ public static int WALL=1;
 public static int ROAD=0;
 public static int Width=20;
 public static int Hight=20;
-public static int Hard=5;
-public static int Medium=10;
-public static int Easy=15;
+public static int Hard=10;
+public static int Medium=15;
+public static int Easy=20;
 
 
 	

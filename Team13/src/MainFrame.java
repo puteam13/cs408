@@ -32,7 +32,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 	int difficulty;
 	int grid[][] = new int[Global.Width][Global.Hight];
 	int level_size;
-	int poopx = 20, poopy = 120, velx = 1, vely = 2;
+	int poopx = 60, poopy = 120, velx = 1, vely = 2;
 	int octopusx = 20, octopusy = 100, movex = 0, movey = 0;
 
 	public void paintComponent(Graphics g) {
@@ -60,7 +60,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 		ImageIcon road_ImageIcon = new ImageIcon("images/road24.png");
 		wall_image = wall_ImageIcon.getImage();
 		road_image = road_ImageIcon.getImage();
-		buildwallroom1();
+		buildwallroom10();
 		for (int i = 0; i < level_size; i++) {
 			for (int j = 0; j < level_size; j++) {
 				if (grid[i][j] == Global.WALL) {
@@ -1111,7 +1111,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 
 		f.setSize(400, 400);
 
-		difficulty = Global.Easy;
+		difficulty = Global.Hard;
 		t = new Timer(difficulty, this);
 	}
 
@@ -1141,6 +1141,18 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 		if (poopy < 0 || poopy > 380) {
 			vely = -vely;
 		}
+		if (velx>0&&grid[(poopx+20)/20][poopy/20]==Global.WALL){
+			velx = -velx;
+			
+			
+		}
+		if (velx<0&&grid[(poopx-1)/20][poopy/20]==Global.WALL){
+			velx = -velx;
+			
+			
+		}
+		
+		
 		// poopy+=vely;
 
 		// if(check_collision(octopusx,octopusy,(octopusx/20+1)*20,(octopusy/20)*20))
@@ -1188,20 +1200,20 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 	public void godown() {
 
 		movex = 0;
-		movey = difficulty /2;
+		movey = difficulty /5;
 		octopusx = octopusx + movex;
 		octopusy = octopusy + movey;
 	}
 
 	public void goright() {
-		movex = difficulty/2 ;
+		movex = difficulty/5 ;
 		movey = 0;
 		octopusx = octopusx + movex;
 		octopusy = octopusy + movey;
 	}
 
 	public void goleft() {
-		movex = -difficulty /2;
+		movex = -difficulty /5;
 		movey = 0;
 		octopusx = octopusx + movex;
 		octopusy = octopusy + movey;
@@ -1250,9 +1262,14 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 				
 			}
 			if (c == KeyEvent.VK_RIGHT) {
-				if (grid[octopusx / 20 + 1][octopusy / 20] != Global.WALL) {
+				int tempy=(octopusy+17)/20;
+				
+				if (grid[octopusx / 20 + 1][octopusy / 20] != Global.WALL&&grid[octopusx / 20 + 1][tempy] != Global.WALL) {
 					goright();
-				//	System.out.println("The x:" + octopusx / 20 + 1
+			
+					
+					
+					//	System.out.println("The x:" + octopusx / 20 + 1
 					//		+ "   The y:" + octopusy / 20);
 
 				}
