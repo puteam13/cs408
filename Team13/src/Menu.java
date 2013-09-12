@@ -10,12 +10,8 @@ import javax.swing.*;
 public class Menu implements ActionListener {
 
  public Menu() {
-  JFrame Menuf = new JFrame("Main Page!");
+  JFrame Menuf = new JFrame("Dungeon Explorer");
   Menuf.setLayout(new GridLayout(2, 2, 20, 20));
-  // JLabel TopScore=new JLabel("Top Scores:");
-  // JLabel TopScore2=new JLabel("Top Scores:");
-  // JLabel TopScore3=new JLabel("Top Scores:");
-  // JLabel TopScore4=new JLabel("Top Scores:");
   JPanel Board1 = new JPanel();
   JPanel Board2 = new JPanel();
   JPanel Board3 = new JPanel();
