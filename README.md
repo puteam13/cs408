@@ -20,4 +20,7 @@ productBacklog.pdf
 Test plan:
 testPlan.pdf
 
+Design Inspection, Code Inspection, Unit Testing:
+Defect Log.pdf
+
 
