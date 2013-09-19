@@ -1,5 +1,4 @@
 import java.awt.Font;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 
 import javax.swing.*;
+
 import java.sql.*;
 
 public class Menu implements ActionListener {
@@ -20,24 +20,36 @@ public class Menu implements ActionListener {
   //retrieve top 5 scores from current user and total
   try {
 	Class.forName("org.sqlite.JDBC");
-	c = DriverManager.getConnection("jdbc:sqlite:data.db");
+	c = DriverManager.getConnection("jdbc:sqlite:data5.db");
   } catch ( Exception e){
 	//CORRECT ERROR
+	  System.out.println(e.getClass().getName() + e.getMessage());
+		System.out.println("error in connecting for score");
+
 	//System.exit(0);
 	//JOptionPane.showMessageDialog(frame, "error connecting to db to get scores");
   }
   try {
+	stmt = c.createStatement();	  
 	ResultSet rs = stmt.executeQuery("SELECT * FROM SCORE ORDER BY HS DESC;");
-	ResultSet rs2 = stmt.executeQuery("SELECT * FROM SCORE ORDER BY HS DESC WHERE USER='" + "Matt" + "';");
+	
 	while(rs.next() && count < 5){
 		globalName[count] += rs.getString("NAME") + " --- " + Integer.toString(rs.getInt("HS"));
+		
+		count++;
+	}
+	ResultSet rs2 = stmt.executeQuery("SELECT * FROM SCORE WHERE NAME='" + Global.currentUser  +"' ORDER BY HS DESC;");
+	count = 0;
+	while(rs2.next() && count < 5){
 		currentName[count] += rs2.getString("NAME") + " --- " + Integer.toString(rs2.getInt("HS"));
 		count++;
 	}
-	count = 0;
   } catch (Exception e) {
 	//CORRECT ERROR
 	//JOptionPane.showMessageDialog(frame, "error selecting scores from database");
+	  System.out.println(e.getClass().getName() + e.getMessage());
+		System.out.println("error in retrieving score");
+
 	//System.exit(0);
   }
   JFrame Menuf = new JFrame("Dungeon Explorer");
@@ -185,7 +197,107 @@ public class Menu implements ActionListener {
  }
 
  public static void main(String[] args) {
+	 Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:data5.db");
+			
+		} catch ( Exception e){
+			System.exit(0);//CORRECT ERROR
+			System.out.println(e.getClass().getName() + e.getMessage());
+			//JOptionPane.showMessageDialog(frame, "error connecting to db to creating tables");
+		}
+		System.out.println("Connection created.");
+		try {
+			stmt = c.createStatement();
+			//create user table unique ID, Username, and password(pass doesnt have to be unique)
+			String userPass = 	"CREATE TABLE IF NOT EXISTS USER" +
+						"(NAME		CHAR(30) PRIMARY KEY	NOT NULL UNIQUE, " +
+						"PASS		CHAR(30)	NOT NULL);";
 
+			
+			String userScore = 	"CREATE TABLE IF NOT EXISTS SCORE" +
+						"(NAME 		CHAR(30)	NOT NULL," +
+						"HS 		 INT		NOT NULL," +
+						"FOREIGN KEY (NAME) REFERENCES USER(NAME) 		)";
+			/*
+			String test = "INSERT INTO USER (ID, NAME) VALUES (NULL, 'MATT');";
+			stmt.executeUpdate(test);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM USER;");
+			while(rs.next()) { 
+				System.out.println(rs.getString("NAME"));
+			}
+			*/
+			stmt.executeUpdate(userPass);
+			stmt.executeUpdate(userScore);
+			stmt.close();
+			c.close();
+						
+		}
+		catch ( Exception e ){
+			//CORRECT ERROR
+			System.out.println("error in table creation");
+			System.out.println(e.getClass().getName() + e.getMessage());
+			//System.exit.(0);
+			//JOptionPane.showMessageDialog(frame, "error creating tables");
+			
+		}
+
+
+		// start add temp user and scores
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:data5.db");
+			
+		} catch ( Exception e){
+			System.exit(0);//CORRECT ERROR
+		}
+		try {
+			
+			stmt = c.createStatement();
+			String deleteUsers = "DELETE FROM USER;";
+			stmt.execute(deleteUsers);
+			String addUser1 = 	"INSERT INTO USER (NAME, PASS) VALUES ('Matt', 'mattpass');";
+			String addUser2 = 	"INSERT INTO USER (NAME, PASS) " +
+								"VALUES ('Art', 'artpass');";
+			stmt.executeUpdate(addUser1);
+			
+			stmt.executeUpdate(addUser2);
+			
+			String addScore1 = 	"INSERT INTO SCORE (NAME, HS) " +
+						"VALUES ('Matt', 100);";
+			String addScore2 = 	"INSERT INTO SCORE (NAME, HS) " +
+						"VALUES ('Matt', 200);";
+			String addScore3 = 	"INSERT INTO SCORE (NAME, HS) " +
+						"VALUES ('Art', 300);";
+			String addScore4 = 	"INSERT INTO SCORE (NAME, HS) " +
+						"VALUES ('Matt', 700);";
+			String addScore5 = 	"INSERT INTO SCORE (NAME, HS) " +
+						"VALUES ('Art', 50);";
+			String addScore6 = 	"INSERT INTO SCORE (NAME, HS) " +
+						"VALUES ('Matt', 10);";
+
+			stmt.executeUpdate(addScore1);
+			stmt.executeUpdate(addScore2);
+			stmt.executeUpdate(addScore3);
+			stmt.executeUpdate(addScore4);
+			stmt.executeUpdate(addScore5);
+			stmt.executeUpdate(addScore6);
+			
+			stmt.close();
+			c.close();
+				
+			
+		}
+		catch (Exception e){
+			//CORRECT ERROR
+			System.out.println(e.getClass().getName() + e.getMessage());
+			System.out.println("error");
+			//JOptionPane.showMessageDialog(frame, "error creating temp uses and scores");
+		}
+		// end add temp user and scores
+		
   Menu f = new Menu();
 
  }
