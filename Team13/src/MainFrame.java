@@ -1,4 +1,4 @@
-
+import java.sql.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -1303,7 +1303,93 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public static void main(String[] agrs) {
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:data.db");
+			
+		} catch ( Exception e){
+			//System.exit(0);//CORRECT ERROR
+			JOptionPane.showMessageDialog(frame, "error connecting to db to creating tables");
+		}
+		try {
+			stmt = c.createStatement();
+			//create user table unique ID, Username, and password(pass doesnt have to be unique)
+			String userPass = 	"CREATE TABLE IF NOT EXISTS USER" +
+						"(ID INTEGER PRIMARY KEY AUTOINCREMENT ," +
+						"(NAME		CHAR(30)	NOT NULL UNIQUE)" +
+						"(PASS		CHAR(30)	NOT NULL)";
 
+
+			String userScore = 	"CREATE TABLE IF NOT EXISTS SCORE" +
+						"(ID INTEGER  			NOT NULL," +
+						"HS 		 INT		NOT NULL," +
+						"FOREIGN KEY (ID) REFERENCES USER(ID) 		)";
+
+			
+			stmt.executeUpdate(userPass);
+			stmt.executeUpdate(userScore);
+			stmt.close();
+			c.close;
+						
+		}
+		catch { Exception e ){
+			//CORRECT ERROR
+			//System.out.println(e.getClass().getName() + e.getMessage());
+			//System.exit.(0);
+			JOptionPane.showMessageDialog(frame, "error creating tables");
+			
+		}
+
+
+		// start add temp user and scores
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:data.db");
+			
+		} catch ( Exception e){
+			System.exit(0);//CORRECT ERROR
+		}
+		try { 
+			stmt = c.createStatement();
+			String addUser1 = 	"INSERT INTO USER (ID, NAME, PASS) " +
+						"VALUES (NULL, 'Matt', 'mattpass');";
+			String addUser2 = 	"INSERT INTO USER (ID, NAME, PASS) " +
+						"VALUES (NULL, 'Art', 'artpass');";
+			stmt.executeUpdate(addUser1);
+			stmt.executeUpdate(addUser2);
+			
+			String addScore1 = 	"INSERT INTO SCORE (ID, HS) " +
+						"VALUES (1, 100);";
+			String addScore2 = 	"INSERT INTO SCORE (ID, HS) " +
+						"VALUES (1, 200);";
+			String addScore3 = 	"INSERT INTO SCORE (ID, HS) " +
+						"VALUES (2, 300);";
+			String addScore4 = 	"INSERT INTO SCORE (ID, HS) " +
+						"VALUES (1, 700);";
+			String addScore5 = 	"INSERT INTO SCORE (ID, HS) " +
+						"VALUES (2, 50);";
+			String addScore6 = 	"INSERT INTO SCORE (ID, HS) " +
+						"VALUES (1, 10);";
+
+			stmt.executeUpdate(addScore1);
+			stmt.executeUpdate(addScore2);
+			stmt.executeUpdate(addScore3);
+			stmt.executeUpdate(addScore4);
+			stmt.executeUpdate(addScore5);
+			stmt.executeUpdate(addScore6);
+			stmt.close();
+			c.close();
+				
+			
+		}
+		catch (Exception e){
+			//CORRECT ERROR
+			JOptionPane.showMessageDialog(frame, "error creating temp uses and scores");
+		}
+		// end add temp user and scores
+		
 		MainFrame f = new MainFrame();
 
 	}

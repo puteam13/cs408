@@ -10,6 +10,34 @@ import javax.swing.*;
 public class Menu implements ActionListener {
 
  public Menu() {
+  String[] currentName = {"1.", "2.", "3.", "4.", "5.");
+  String[] globalName = {"1.", "2.", "3.", "4.", "5.");
+  int count = 0;
+  //retrieve top 5 scores from current user and total
+  try {
+	Class.forName("org.sqlite.JDBC");
+	c = DriverManager.getConnection("jdbc:sqlite:data.db");
+  } catch ( Exception e){
+	//CORRECT ERROR
+	//System.exit(0);
+	JOptionPane.showMessageDialog(frame, "error connecting to db to get scores");
+  }
+  try {
+	ResultSet rs = stmt.executeQuery("SELECT * FROM SCORE ORDER BY HS DESC;");
+	ResultSet rs2 = stmt.executeQuery("SELECT * FROM SCORE ORDER BY HS DESC WHERE USER='" + currUser + "';");
+	while(rs.next() && count < 5){
+		globalName[count] = "";
+		currentName[count= = 
+		globalName[count] += rs.getString("NAME") + " --- " + Integer.toString(rs.getInt("HS"));
+		currentName[count] += rs2.getString("NAME") + " --- " + Integer.toString(rs2.getInt("HS"));
+		count++;
+	}
+	count = 0;
+  } catch (Exception e) {
+	//CORRECT ERROR
+	JOptionPane.showMessageDialog(frame, "error selecting scores from database");
+	//System.exit(0);
+  }
   JFrame Menuf = new JFrame("Dungeon Explorer");
   Menuf.setLayout(new GridLayout(2, 2, 20, 20));
   JPanel Board1 = new JPanel();
@@ -22,16 +50,16 @@ public class Menu implements ActionListener {
   JLabel TopScore = new JLabel("OVERALL BESTS:");
   Font myFont = new Font("Serif", Font.BOLD, 18);
   TopScore.setFont(myFont);
-
-  JLabel Rank1 = new JLabel("1.");
+  	
+  JLabel Rank1 = new JLabel("globalName[0]");
   Rank1.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel Rank2 = new JLabel("2.");
+  JLabel Rank2 = new JLabel("globalName[1]");
   Rank2.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel Rank3 = new JLabel("3.");
+  JLabel Rank3 = new JLabel("globalName[2]");
   Rank3.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel Rank4 = new JLabel("4.");
+  JLabel Rank4 = new JLabel("globalName[3]");
   Rank4.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel Rank5 = new JLabel("5.");
+  JLabel Rank5 = new JLabel("globalName[4]");
   Rank5.setFont(new Font("Serif", Font.BOLD, 20));
   Board1.setLayout(new GridLayout(6, 1, 5, 5));
   Board1.add(TopScore);
@@ -50,15 +78,15 @@ public class Menu implements ActionListener {
   
   Blank.setFont(myFont);
 
-  JLabel PRank1 = new JLabel("1.");
+  JLabel PRank1 = new JLabel("currentName[0]");
   PRank1.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel PRank2 = new JLabel("2.");
+  JLabel PRank2 = new JLabel("currentName[1]");
   PRank2.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel PRank3 = new JLabel("3.");
+  JLabel PRank3 = new JLabel("currentName[2]");
   PRank3.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel PRank4 = new JLabel("4.");
+  JLabel PRank4 = new JLabel("currentName[3]");
   PRank4.setFont(new Font("Serif", Font.BOLD, 20));
-  JLabel PRank5 = new JLabel("5.");
+  JLabel PRank5 = new JLabel("currentName[4]");
   PRank5.setFont(new Font("Serif", Font.BOLD, 20));
   
   Board3.setLayout(new GridLayout(7, 1, 5, 5));
