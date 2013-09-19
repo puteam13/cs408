@@ -1,4 +1,3 @@
-import java.sql.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,21 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
+import java.sql.*;
 
 public class MainFrame extends JPanel implements ActionListener, KeyListener {
 	Timer t;
@@ -1310,35 +1300,43 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 			c = DriverManager.getConnection("jdbc:sqlite:data.db");
 			
 		} catch ( Exception e){
-			//System.exit(0);//CORRECT ERROR
-			JOptionPane.showMessageDialog(frame, "error connecting to db to creating tables");
+			System.exit(0);//CORRECT ERROR
+			System.out.println(e.getClass().getName() + e.getMessage());
+			//JOptionPane.showMessageDialog(frame, "error connecting to db to creating tables");
 		}
+		System.out.println("Connection created.");
 		try {
 			stmt = c.createStatement();
 			//create user table unique ID, Username, and password(pass doesnt have to be unique)
 			String userPass = 	"CREATE TABLE IF NOT EXISTS USER" +
 						"(ID INTEGER PRIMARY KEY AUTOINCREMENT ," +
-						"(NAME		CHAR(30)	NOT NULL UNIQUE)" +
-						"(PASS		CHAR(30)	NOT NULL)";
+						"NAME		CHAR(30)	NOT NULL UNIQUE );" ;
+					//	"PASS		CHAR(30)	NOT NULL)";
 
-
+			
 			String userScore = 	"CREATE TABLE IF NOT EXISTS SCORE" +
 						"(ID INTEGER  			NOT NULL," +
 						"HS 		 INT		NOT NULL," +
 						"FOREIGN KEY (ID) REFERENCES USER(ID) 		)";
-
+			String test = "INSERT INTO USER (ID, NAME) VALUES (NULL, 'MATT');";
+			stmt.executeUpdate(test);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM USER;");
+			while(rs.next()) { 
+				System.out.println(rs.getString("NAME"));
+			}
 			
 			stmt.executeUpdate(userPass);
 			stmt.executeUpdate(userScore);
 			stmt.close();
-			c.close;
+			c.close();
 						
 		}
-		catch { Exception e ){
+		catch ( Exception e ){
 			//CORRECT ERROR
-			//System.out.println(e.getClass().getName() + e.getMessage());
+			System.out.println("error in table creation");
+			System.out.println(e.getClass().getName() + e.getMessage());
 			//System.exit.(0);
-			JOptionPane.showMessageDialog(frame, "error creating tables");
+			//JOptionPane.showMessageDialog(frame, "error creating tables");
 			
 		}
 
@@ -1351,15 +1349,16 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 		} catch ( Exception e){
 			System.exit(0);//CORRECT ERROR
 		}
-		try { 
-			stmt = c.createStatement();
-			String addUser1 = 	"INSERT INTO USER (ID, NAME, PASS) " +
-						"VALUES (NULL, 'Matt', 'mattpass');";
-			String addUser2 = 	"INSERT INTO USER (ID, NAME, PASS) " +
-						"VALUES (NULL, 'Art', 'artpass');";
-			stmt.executeUpdate(addUser1);
-			stmt.executeUpdate(addUser2);
+		try {
 			
+			stmt = c.createStatement();
+		//	String addUser1 = 	"INSERT INTO USER (ID, NAME) VALUES (NULL, 'Matt');";
+			String addUser2 = 	"INSERT INTO USER (ID, NAME) " +
+								"VALUES (NULL, 'Art');";
+		//	stmt.executeUpdate(addUser1);
+			
+			stmt.executeUpdate(addUser2);
+			/*
 			String addScore1 = 	"INSERT INTO SCORE (ID, HS) " +
 						"VALUES (1, 100);";
 			String addScore2 = 	"INSERT INTO SCORE (ID, HS) " +
@@ -1379,6 +1378,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 			stmt.executeUpdate(addScore4);
 			stmt.executeUpdate(addScore5);
 			stmt.executeUpdate(addScore6);
+			*/
 			stmt.close();
 			c.close();
 				
@@ -1386,7 +1386,9 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 		}
 		catch (Exception e){
 			//CORRECT ERROR
-			JOptionPane.showMessageDialog(frame, "error creating temp uses and scores");
+			System.out.println(e.getClass().getName() + e.getMessage());
+			System.out.println("error");
+			//JOptionPane.showMessageDialog(frame, "error creating temp uses and scores");
 		}
 		// end add temp user and scores
 		
