@@ -11,16 +11,19 @@ File locations:
 Repository location:
 https://github.com/puteam13/cs408/
 
-Product Charter:
-productCharter.pdf
+* Product Charter:
+  * productCharter.pdf
 
-Product Backlog:
-productBacklog.pdf
+* Product Backlog:
+  * productBacklog.pdf
 
-Test plan:
-testPlan.pdf
+* Test plan:
+  * testPlan.pdf
 
-Design Inspection, Code Inspection, Unit Testing:
-Defect Log.pdf
+* Design Inspection, Code Inspection, Unit Testing:
+  * Defect Log.pdf
+
+* Incremental Testing and Regression Testing:
+  * IncrementalandRegressionTesting.pdf
 
 
