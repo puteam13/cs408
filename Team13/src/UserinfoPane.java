@@ -43,7 +43,8 @@ public class UserinfoPane implements ActionListener{
 		//set frame properties
         frame.setTitle(submitButton.getText());
         frame.setSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         SpringLayout layout=new SpringLayout();
         inputform.setLayout(layout);
@@ -82,7 +83,7 @@ public class UserinfoPane implements ActionListener{
 
 	public static void main(String[] args) {
 		UserinfoPane pane = new UserinfoPane(1);
-		pane.getUsername();
+		//pane.getUsername();
 		//System.out.println(pane.passwordTextField.size().height);
 		//System.out.println(pane.passwordTextField.size().width);
 	}
