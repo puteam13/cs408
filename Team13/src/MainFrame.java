@@ -24,11 +24,12 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 	int level_size;
 	int poopx = 60, poopy = 120, velx = 1, vely = 2;
 	int octopusx = 20, octopusy = 100, movex = 0, movey = 0;
-
+	int finishx;
+	int finishy;
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		this.setBackground(Color.GRAY);
-		g.setColor(Color.green);
+		g.setColor(Color.GREEN);
 		g.drawOval(0, 0, 20, 20);
 		first_level(g);
 		ImageIcon poop_ImageIcon = new ImageIcon("images/poop.png");
@@ -39,9 +40,21 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 		octopus_image = octopus_ImageIcon.getImage();
 		g.drawImage(octopus_image, octopusx, octopusy, null);
 
-		g.drawRect(20, 20, 20, 20);
+		//g.drawRect(20, 20, 20, 20);
+		
+		if(Global.clearMap)
+			clearLevel(g);
+		drawFinish(g, 20, 20);
 		t.start();
 		repaint();
+		
+	}
+	
+	public void drawFinish(Graphics board, int x, int y)
+	{
+		board.drawRect(x,y,20,20);
+		finishx = x;
+		finishy = y;
 	}
 
 	public void first_level(Graphics g) {
@@ -50,7 +63,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 		ImageIcon road_ImageIcon = new ImageIcon("images/road24.png");
 		wall_image = wall_ImageIcon.getImage();
 		road_image = road_ImageIcon.getImage();
-		buildwallroom10();
+		buildwallroom2();
 		for (int i = 0; i < level_size; i++) {
 			for (int j = 0; j < level_size; j++) {
 				if (grid[i][j] == Global.WALL) {
@@ -1208,7 +1221,34 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 		octopusx = octopusx + movex;
 		octopusy = octopusy + movey;
 	}
+	
+	public void clearLevel(Graphics g)
+	{
+		g.dispose();
+		Global.clearMap = false;
+		switchLevel();
+		System.out.println("IT WENT IN");
+	}
+	public void switchLevel()
+	{
+		switch(Global.currentLevel)
+		{
+		case 1:
+		//	g.setColor(Color.WHITE);
+			
+			buildwallroom1();
+			break;
+		}
+	}
 
+	public boolean checkFinish(int octx, int octy, int finx, int finy)
+	{
+		if(octx == finx && octy == finy)
+			return true;
+		else
+			return false;
+		
+	}
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int c = e.getKeyCode();
@@ -1233,7 +1273,13 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 						System.out.println("x"+octopusx);
 				
 					System.out.println("     y"+octopusy);
-
+					
+					
+					if(checkFinish(octopusx, octopusy, finishx, finishy))
+						{
+							Global.currentLevel++;
+							Global.clearMap = true;
+						}
 				
 				//	octopusy = octopusy + movey;
 				
@@ -1250,6 +1296,12 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 					octopusy = octopusy - movey;
 				}
 				
+				if(checkFinish(octopusx, octopusy, finishx, finishy))
+				{
+					Global.currentLevel++;
+					Global.clearMap = true;
+				}
+				
 			}
 			if (c == KeyEvent.VK_RIGHT) {
 				int tempy=(octopusy+17)/20;
@@ -1263,6 +1315,9 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 					//		+ "   The y:" + octopusy / 20);
 
 				}
+				
+				if(checkFinish(octopusx, octopusy, finishx, finishy))
+					System.out.println("RIGHT");
 			}
 			if (c == KeyEvent.VK_DOWN) {
 				if (grid[octopusx / 20][octopusy / 20 + 1] != Global.WALL)
@@ -1294,8 +1349,8 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener {
 
 	public static void main(String[] agrs) {
 		
-		MainFrame f = new MainFrame();
-
+		//MainFrame f = new MainFrame();
+		MainMenu menu = new MainMenu();
 	}
 
 }

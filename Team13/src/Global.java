@@ -14,6 +14,8 @@ public static int Hard=10;
 public static int Medium=15;
 public static int Easy=20;
 public static String currentUser = "Matt";
+public static int currentLevel = 0;
+public static boolean clearMap = false;
 
 
 	
