@@ -1,17 +1,15 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class Menu implements ActionListener {
-  // Data.
-  User user;
-  int[] topScores;
+  User user; // Current user playing the game.
+  int topScores[]; // Top global scores.
+  String topUsers[]; // Users who obtained the top global scores.
   
   // Swing components.
-  // The preferred size of the main screen.
   private final int PREFERRED_WIDTH = 600;
   private final int PREFERRED_HEIGHT = 600;
   
@@ -36,6 +34,35 @@ public class Menu implements ActionListener {
   JButton signup,signin,cancelButtons[];
   
   public Menu() {
+    initializeGUI();
+    obtainTopScores();
+    obtainUserInfo();
+  }
+  
+  // Obtain user information by showing a sign in/up screen.
+  public void obtainUserInfo(){
+    frame.setContentPane(signcomp);
+    frame.setVisible(true);
+  }
+  
+  // Obtain top scores and its users.
+  public void obtainTopScores(){
+    //TODO: get global top scores from database and store them in int array |topScores|;
+    // store the corresponding usernames in |topUsers|.
+    topScores=new int[5];
+    topUsers=new String[5];
+    for(int i=0;i<5;i++){
+      topScores[i]=0;
+      topUsers[i]="Ghost User";
+    }
+    // Resetting JLabel |globalScores[]| based on the topScores.
+    for(int i=0;i<5;i++){
+      globalScores[i].setText((i+1)+". "+topScores[i]+"\t\t"+topUsers[i]);
+    }
+  }
+  
+  // Initialize all the GUI Components.
+  public void initializeGUI(){
     titleFont = new Font("Serif", Font.BOLD, 30);
     heading1Font = new Font("Serif", Font.BOLD, 25);
     heading2Font = new Font("Serif", Font.BOLD, 20);
@@ -65,11 +92,11 @@ public class Menu implements ActionListener {
     personalBests.setFont(heading3Font);
     globalBests=new JLabel("Global Bests");
     globalBests.setFont(heading3Font);
-
+    
     personalScores=new JLabel[5];
     globalScores=new JLabel[5];
     for(int i=1;i<=5;i++){
-      globalScores[i-1]=new JLabel(i+". "+100+"\t God");
+      globalScores[i-1]=new JLabel(i+". "+100+"\t\tGod");
       personalScores[i-1]=new JLabel(i+". "+50);
     }
     
@@ -82,8 +109,8 @@ public class Menu implements ActionListener {
       scoresPanel.add(personalScores[i]);
     }
     SpringUtilities.makeCompactGrid(scoresPanel, 12, 1, //rows, cols
-                                        5, 10,        //initX, initY
-                                        40, 25);       //xPad, yPad
+                                    5, 10,        //initX, initY
+                                    40, 25);       //xPad, yPad
     
     // Layout the main panel.
     mainPanel=new JPanel();
@@ -91,7 +118,7 @@ public class Menu implements ActionListener {
     
     welcomeMsg=new JLabel("Welcome! Please sign up/in first.");
     if(user!=null){
-     welcomeMsg=new JLabel("Welcome back "+user.getUsername()+"!"); 
+      welcomeMsg=new JLabel("Welcome back "+user.getUsername()+"!"); 
     }
     welcomeMsg.setFont(heading2Font);
     selectLevel = new JLabel("Select Difficulty:");
@@ -110,12 +137,13 @@ public class Menu implements ActionListener {
     levelPanel.add(medium);
     levelPanel.add(hard);
     SpringUtilities.makeCompactGrid(levelPanel, 1, 3, //rows, cols
-                                        0, 0,        //initX, initY
-                                        20, 0);       //xPad, yPad
+                                    0, 0,        //initX, initY
+                                    20, 0);       //xPad, yPad
     
     playButton = new JButton("Play");
+    playButton.setEnabled(false);
     playButton.setPreferredSize(new Dimension(64, 264));
-    switchUserButton = new JButton("Switch User");
+    switchUserButton = new JButton("Sign up/in");
     switchUserButton.setPreferredSize(new Dimension(64, 264));
     helpButton = new JButton("Help");
     helpButton.setPreferredSize(new Dimension(64, 264));
@@ -136,8 +164,8 @@ public class Menu implements ActionListener {
     mainPanel.add(exitButton);
     
     SpringUtilities.makeCompactGrid(mainPanel, 7, 1, //rows, cols
-                                        5, 20,        //initX, initY
-                                        100, 20);       //xPad, yPad
+                                    5, 20,        //initX, initY
+                                    100, 20);       //xPad, yPad
     
     // Adding elements to Maincomp.
     maincomp.add(header, BorderLayout.PAGE_START);
@@ -175,10 +203,10 @@ public class Menu implements ActionListener {
     signupPanel.add(passwordFields[0]);
     signupPanel.add(cancelButtons[0]);
     signupPanel.add(signup);
-
+    
     SpringUtilities.makeCompactGrid(signupPanel, 3, 2, //rows, cols
-                                        20, 50,        //initX, initY
-                                        50, 10);       //xPad, yPad
+                                    20, 50,        //initX, initY
+                                    50, 150);       //xPad, yPad
     
     signinPanel.setLayout(new SpringLayout());
     signinPanel.add(usernameLabels[1]);
@@ -188,8 +216,8 @@ public class Menu implements ActionListener {
     signinPanel.add(cancelButtons[1]);
     signinPanel.add(signin);
     SpringUtilities.makeCompactGrid(signinPanel, 3, 2, //rows, cols
-                                        5, 5,        //initX, initY
-                                        50, 50);       //xPad, yPad
+                                    20, 50,        //initX, initY
+                                    50, 150);       //xPad, yPad
     
     signin.addActionListener(this);
     signup.addActionListener(this);
@@ -200,16 +228,14 @@ public class Menu implements ActionListener {
     signcomp.addTab("Sign up",signupPanel);
     signcomp.addTab("Sign in",signinPanel);
     
-    
-    frame.setContentPane(maincomp);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
-    frame.setVisible(true);
   }
   
-  // Get universal top socres from database, save them to |topScores|.
+  
+  // Get global top socres from database, save them to |topScores|.
   private void getTopScores() {
-    String[] currentName = {"1.", "2.", "3.", "4.", "5."};
+    /*String[] currentName = {"1.", "2.", "3.", "4.", "5."};
     String[] globalName = {"1.", "2.", "3.", "4.", "5."};
     int count = 0;
     Connection c = null;
@@ -248,10 +274,13 @@ public class Menu implements ActionListener {
       System.out.println("error in retrieving score");
       
       //System.exit(0);
-    }
+    }*/
   }
   
+  
   public static void main(String[] args) {
+    
+    
     /*Connection c = null;
      Statement stmt = null;
      try {
@@ -355,19 +384,84 @@ public class Menu implements ActionListener {
      */
     Menu menu = new Menu();
   }
-  
-  @Override
+
   public void actionPerformed(ActionEvent e) {
     Object obj=e.getSource();
-    if(obj==switchUserButton){
+    // Components in maincomp
+    if(obj==playButton){
+      
+    }else if(obj==switchUserButton){
       frame.setContentPane(signcomp);
       frame.setVisible(true);
-      
-    }else if(obj==cancelButtons[0] || obj==cancelButtons[1]){
-      frame.setContentPane(maincomp);
-      frame.setVisible(true);
+    }else if(obj==helpButton){
+      String helpText="Connect With Us\nPlease email us at jtee@purdue.edu.\nWe're here for you.";
+      JOptionPane.showMessageDialog(maincomp,helpText,"Help",JOptionPane.INFORMATION_MESSAGE);
+    }else if(obj==exitButton){
+      System.exit(0);
     }
     
+    // Components in signcomp
+    if(obj==cancelButtons[0] || obj==cancelButtons[1]){
+      frame.setContentPane(maincomp);
+      if(user==null){
+        switchToUser(null);
+      }
+      frame.setVisible(true);
+    }else if(obj==signup){
+      String uname=usernameFields[0].getText(),pword=passwordFields[0].getText();
+      String err=User.checkForSignUp(uname,pword);
+      if(err==null){
+        switchToUser(uname);
+      }else{
+        JOptionPane.showMessageDialog(signcomp,err,"Error occured!",JOptionPane.ERROR_MESSAGE);
+      }
+    }else if(obj==signin){
+      String uname=usernameFields[1].getText(),pword=passwordFields[1].getText();
+      String err=User.checkForSignIn(uname,pword);
+      if(err==null){
+        switchToUser(uname);
+      }else{
+        JOptionPane.showMessageDialog(signcomp,err,"Error occured!",JOptionPane.ERROR_MESSAGE);
+      }
+    }
+  }
+  
+  // Used in |actionPerformed| to switch to another user account.
+  private void switchToUser(String uname){
+    if(uname==null){
+      // Reset personal bests to empty
+      for(int i=0;i<5;i++){
+        personalScores[i].setText((i+1)+". ");
+      }
+      // Reset playbutton to be disbaled
+      playButton.setEnabled(false);
+      return; 
+    }
+    user=new User(uname);
+    // Reset personal bests
+    int userTopScores[]=user.getTopScores();
+    for(int i=0;i<5;i++){
+      personalScores[i].setText((i+1)+". "+userTopScores[i]);
+    }
+    // Reset welcome message
+    String msg="Welcome back "+uname+"!";
+    if(msg.length()<33){
+      for(int i=0;i<33-msg.length();i++){
+        msg=msg+" "; 
+      }
+    }
+    welcomeMsg.setText(msg);
+    // Change the text of switch user button
+    switchUserButton.setText("Switch User");
+    // Reset playbutton to be enbaled
+    playButton.setEnabled(true);
+    // Clear textFields
+    for(int i=0;i<2;i++){
+     usernameFields[i].setText(""); 
+     passwordFields[i].setText("");
+    }
+    frame.setContentPane(maincomp);
+    frame.setVisible(true);
   }
   
 }

@@ -1,24 +1,40 @@
 public class User {
   String username;
-  String password;
   int[] topScores;
   int currScore;
   
   public User() {
     username = null;
-    password = null;
     currScore=0;
     topScores=new int[5];
   }
   
-  public User(String n, String s) {
-    this.username = n;
-    this.password = s;
+  public User(String username) {
+    this.username = username;
   }
   
   /********* Class Methods *********/
+  // Sign up: check if (username, password) could be used for sign up.
+  public static String checkForSignUp(String username, String password){
+    String err=checkFormatForUsername(username);
+    if(err!=null)return err;
+    err=checkFormatForPassword(password);
+    if(err!=null)return err;
+    return DungeonDatabase.signup(username,password);
+  }
+  
+  // Sign up: check if (username, password) could be used for sign in.
+  public static String checkForSignIn(String username, String password){
+    String err=checkFormatForUsername(username);
+    if(err!=null)return err;
+    err=checkFormatForPassword(password);
+    if(err!=null)return err;
+    return DungeonDatabase.signin(username,password);
+  }
+  
+  
   // Sign up: check if a username has correct formats. If correct, return null; else return error information.
-  public static String checkFormatForUsername(String username){
+  private static String checkFormatForUsername(String username){
     if(username.length()<5 || username.length()>14){
       return "Username must have length between 5 and 14.";
     }else if(!Character.isLetter(username.charAt(0))){
@@ -28,41 +44,32 @@ public class User {
   }
   
   // Sign up: check if a password has correct formats. If correct, return null; else return error information.
-  public static String checkFormatForPassword(String password){
+  private static String checkFormatForPassword(String password){
     if(password.length()<5 || password.length()>14){
       return "Password must have length between 5 and 14.";
     }
     return null;
   }
   
-  // Sign up: check if a username exists in database.
-  public static String checkUserExistance(String username){
-    // TODO: check if username exists in database.
-    return null;
-  }
-  
-  // Sign in: check if a password is correct for the username.
-  public static String checkPassword(String username, String password){
-    // TODO: check if password is correct.
-    return null;
-  }
-  
   /********* Database Assesses *********/
-  public void retriveTopScores(){
-    // set top topScoress
+  public int[] getTopScores(){
+    if(topScores==null){
+      topScores=new int[5];
+      // TODO: get top topScores from database.
+      for(int i=0;i<5;i++){
+       topScores[i]=(5-i)*100; 
+      }
+    }
+    return topScores;
   }
   
   public void saveTopScores(){
-    
+    // TODO: Save topScores to database.
   }
   
   
   public String getUsername() {
     return username;
-  }
-  
-  public String getPassword() {
-    return password;
   }
   
   public int getCurrScore() {
@@ -71,10 +78,6 @@ public class User {
   
   public void setUsername(String username) {
     this.username = username;
-  }
-  
-  public void setPassword(String password) {
-    this.password = password;
   }
   
   public void setCurrScore(int topScores) {
