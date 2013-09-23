@@ -47,10 +47,14 @@ public class Menu implements ActionListener {
   
   // Obtain top scores and its users.
   public void obtainTopScores(){
-    Object[] res=DungeonDatabase.getGlobalTopScores();
-    topScores=(int[])res[0];
-    topUsers=(String[])res[1];
-    
+    //TODO: get global top scores from database and store them in int array |topScores|;
+    // store the corresponding usernames in |topUsers|.
+    topScores=new int[5];
+    topUsers=new String[5];
+    for(int i=0;i<5;i++){
+      topScores[i]=0;
+      topUsers[i]="Ghost User";
+    }
     // Resetting JLabel |globalScores[]| based on the topScores.
     for(int i=0;i<5;i++){
       globalScores[i].setText((i+1)+". "+topScores[i]+"\t\t"+topUsers[i]);
@@ -105,7 +109,7 @@ public class Menu implements ActionListener {
       scoresPanel.add(personalScores[i]);
     }
     SpringUtilities.makeCompactGrid(scoresPanel, 12, 1, //rows, cols
-                                    10, 10,        //initX, initY
+                                    5, 10,        //initX, initY
                                     40, 25);       //xPad, yPad
     
     // Layout the main panel.

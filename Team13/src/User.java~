@@ -1,10 +1,12 @@
 public class User {
   String username;
+  int[] topScores;
   int currScore;
   
   public User() {
     username = null;
     currScore=0;
+    topScores=new int[5];
   }
   
   public User(String username) {
@@ -51,12 +53,20 @@ public class User {
   
   /********* Database Assesses *********/
   public int[] getTopScores(){
-    return DungeonDatabase.getTopScoresForUser(username);
+    if(topScores==null){
+      topScores=new int[5];
+      // TODO: get top topScores from database.
+      for(int i=0;i<5;i++){
+       topScores[i]=(5-i)*100; 
+      }
+    }
+    return topScores;
   }
   
-  public void saveScoreToDatabase(){
-    DungeonDatabase.saveScoreForUser(username,currScore);
+  public void saveTopScores(){
+    // TODO: Save topScores to database.
   }
+  
   
   public String getUsername() {
     return username;
@@ -70,8 +80,37 @@ public class User {
     this.username = username;
   }
   
-  public void setCurrScore(int scores) {
-    currScore=scores;
+  public void setCurrScore(int topScores) {
+    currScore=topScores;
+    updateTopScores();
+  }
+  
+  // Update top scores with currScore.
+  public void updateTopScores() {
+    // topScores[0]>=topScores[1]>=topScores[2]>=topScores[3]>=topScores[4]
+    if (currScore <= topScores[4])
+      return;
+    if (currScore > topScores[0]) {
+      topScores[4] = topScores[3];
+      topScores[3] = topScores[2];
+      topScores[2] = topScores[1];
+      topScores[1] = topScores[0];
+      topScores[0] = currScore;
+    } else if (currScore > topScores[1]) {
+      topScores[4] = topScores[3];
+      topScores[3] = topScores[2];
+      topScores[2] = topScores[1];
+      topScores[1] = currScore;
+    } else if (currScore > topScores[2]) {
+      topScores[4] = topScores[3];
+      topScores[3] = topScores[2];
+      topScores[2] = currScore;
+    } else if (currScore > topScores[3]) {
+      topScores[4] = topScores[3];
+      topScores[3] = currScore;
+    } else if (currScore > topScores[4]) {
+      topScores[4] = currScore;
+    }
   }
   
   public static void main(String args[]){
