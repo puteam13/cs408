@@ -56,7 +56,7 @@ public class Menu implements ActionListener {
     
     // Resetting JLabel |globalScores[]| based on the topScores.
     for(int i=0;i<5;i++){
-      globalScores[i].setText((i+1)+". "+topScores[i]+"\t\t"+topUsers[i]);
+      globalScores[i].setText((i+1)+". "+topScores[i]+"        "+topUsers[i]);
     }
   }
   

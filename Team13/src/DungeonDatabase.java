@@ -170,14 +170,14 @@ public class DungeonDatabase{
         uid=rs.getInt("UID");
       }
       
-      query="SELECT UID FROM USERS ORDER BY UID DESC;";
+      query="SELECT SID FROM SCORES ORDER BY SID DESC;";
       rs = stmt.executeQuery(query);
       int sid=0;
       if ( rs.next() ) {
         sid=rs.getInt("SID")+1;
       }
       
-      String insert = String.format("INSERT INTO USERS (SID,SCORE,UID) VALUES (%d, %d, %d);",
+      String insert = String.format("INSERT INTO SCORES (SID,SCORE,UID) VALUES (%d, %d, %d);",
                                     sid, score, uid); 
       stmt.executeUpdate(insert);
       stmt.close();
