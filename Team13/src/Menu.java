@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -18,6 +19,8 @@ public class Menu implements ActionListener {
   JTabbedPane signcomp;
   
   Font titleFont,heading1Font,heading2Font,heading3Font;
+  
+  MainFrame game;
   
   // Components in Maincomp.
   JLabel header,footer,personalBests,globalBests, personalScores[], globalScores[],welcomeMsg,selectLevel;
@@ -106,7 +109,7 @@ public class Menu implements ActionListener {
     }
     SpringUtilities.makeCompactGrid(scoresPanel, 12, 1, //rows, cols
                                     10, 10,        //initX, initY
-                                    40, 25);       //xPad, yPad
+                                    40, 20);       //xPad, yPad
     
     // Layout the main panel.
     mainPanel=new JPanel();
@@ -385,8 +388,14 @@ public class Menu implements ActionListener {
     Object obj=e.getSource();
     // Components in maincomp
     if(obj==playButton){
-      
+      game = new MainFrame();
+      game.f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+      //frame.setVisible(false);
     }else if(obj==switchUserButton){
+      if(game!=null){
+    	  game.f.dispose();
+    	  game=null;
+      }
       frame.setContentPane(signcomp);
       frame.setVisible(true);
     }else if(obj==helpButton){

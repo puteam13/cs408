@@ -117,7 +117,7 @@ public class MainMenu implements ActionListener{
   {
    frame.setVisible(false);
    frame.dispose();
-   MainFrame f = new MainFrame();
+   //MainFrame f = new MainFrame();
    
   }
   else if(e.getSource() == helpButton)

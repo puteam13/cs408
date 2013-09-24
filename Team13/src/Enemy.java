@@ -12,10 +12,8 @@ public class Enemy {
 	public Enemy(int x, int y){
 		this.x=x;
 		this.y=y;
-		
 		poop_ImageIcon = new ImageIcon("images/poop.png");
 		poop_image = poop_ImageIcon.getImage();
-		
 	}
 	
 	

@@ -16,7 +16,7 @@ public class Global {
 	public static int grid[][];
 	public static int movex = 0;
 	public static int movey = 0;
-	public static int difficulty=Hard;
+	public static int difficulty=Easy;
 	public static int LEVEL=1;
 	public static int EXIT=2;
 	public static int Life=3;

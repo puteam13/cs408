@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -18,6 +19,8 @@ public class Menu implements ActionListener {
   JTabbedPane signcomp;
   
   Font titleFont,heading1Font,heading2Font,heading3Font;
+  
+  MainFrame game;
   
   // Components in Maincomp.
   JLabel header,footer,personalBests,globalBests, personalScores[], globalScores[],welcomeMsg,selectLevel;
@@ -47,14 +50,10 @@ public class Menu implements ActionListener {
   
   // Obtain top scores and its users.
   public void obtainTopScores(){
-    //TODO: get global top scores from database and store them in int array |topScores|;
-    // store the corresponding usernames in |topUsers|.
-    topScores=new int[5];
-    topUsers=new String[5];
-    for(int i=0;i<5;i++){
-      topScores[i]=0;
-      topUsers[i]="Ghost User";
-    }
+    Object[] res=DungeonDatabase.getGlobalTopScores();
+    topScores=(int[])res[0];
+    topUsers=(String[])res[1];
+    
     // Resetting JLabel |globalScores[]| based on the topScores.
     for(int i=0;i<5;i++){
       globalScores[i].setText((i+1)+". "+topScores[i]+"\t\t"+topUsers[i]);
@@ -109,7 +108,7 @@ public class Menu implements ActionListener {
       scoresPanel.add(personalScores[i]);
     }
     SpringUtilities.makeCompactGrid(scoresPanel, 12, 1, //rows, cols
-                                    5, 10,        //initX, initY
+                                    10, 10,        //initX, initY
                                     40, 25);       //xPad, yPad
     
     // Layout the main panel.
@@ -389,7 +388,8 @@ public class Menu implements ActionListener {
     Object obj=e.getSource();
     // Components in maincomp
     if(obj==playButton){
-      
+      game = new MainFrame();
+      game.f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }else if(obj==switchUserButton){
       frame.setContentPane(signcomp);
       frame.setVisible(true);
