@@ -1,12 +1,6 @@
 
 public class Buildwallroom1 {
 	
-	
-	//int a[][];
-	
-	
-	
-	
 public Buildwallroom1( ){
 	Global.grid = new int[Global.GridWid][Global.GridHig];
 
