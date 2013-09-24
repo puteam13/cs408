@@ -13,7 +13,7 @@ public class DungeonDatabase{
       Class.forName("org.sqlite.JDBC");
       con = DriverManager.getConnection(dbURL);
       con.setAutoCommit(false);
- 
+      
       stmt = con.createStatement();
       String createUsersTable = "CREATE TABLE IF NOT EXISTS USERS " +
         "(UID INT PRIMARY KEY     NOT NULL," +
@@ -30,7 +30,8 @@ public class DungeonDatabase{
       con.commit();
       con.close();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.err.println("createTable(): "+e.getClass().getName() + ": " + e.getMessage() );
+      System.exit(1);
     }
   }
   
@@ -41,7 +42,7 @@ public class DungeonDatabase{
       Class.forName("org.sqlite.JDBC");
       con = DriverManager.getConnection(dbURL);
       con.setAutoCommit(false);
-
+      
       stmt = con.createStatement();
       String dropUsersTable = "DROP TABLE IF EXISTS USERS;";
       String dropScoresTable = "DROP TABLE IF EXISTS SCORES;";
@@ -51,7 +52,7 @@ public class DungeonDatabase{
       con.commit();
       con.close();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.err.println("dropTable(): "+e.getClass().getName() + ": " + e.getMessage() );
       System.exit(1);
     }
   }
@@ -84,14 +85,14 @@ public class DungeonDatabase{
         c.close();
         return "ERROR: Invalid Password!";
       }
-     
+      
       query="SELECT UID FROM USERS ORDER BY UID DESC;";
       rs = stmt.executeQuery(query);
       int uid=0;
       if ( rs.next() ) {
         uid=rs.getInt("UID")+1;
       }
-
+      
       String insert = String.format("INSERT INTO USERS (UID,NAME,PASSWORD) VALUES (%d, %s, %s);",
                                     uid, "'"+username+"'","'"+hashedPassword+"'"); 
       stmt.executeUpdate(insert);
@@ -100,7 +101,7 @@ public class DungeonDatabase{
       c.commit();
       c.close();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.err.println("signup(): "+e.getClass().getName() + ": " + e.getMessage() );
       System.exit(1);
     }
     return null;
@@ -118,10 +119,10 @@ public class DungeonDatabase{
       c = DriverManager.getConnection(dbURL);
       c.setAutoCommit(false);
       stmt = c.createStatement();
-
+      
       String query="SELECT * FROM USERS WHERE NAME='"+username+"';";
       ResultSet rs = stmt.executeQuery(query);
-
+      
       if ( rs.next() ) {
         dbpassword=rs.getString("PASSWORD");
       }else{
@@ -130,7 +131,7 @@ public class DungeonDatabase{
         c.close();
         return "ERROR: Username does not exist!";
       }
-
+      
       String hashedPassword=getHashedPassword(password);
       if(!hashedPassword.equals(dbpassword)){
         rs.close();
@@ -138,75 +139,23 @@ public class DungeonDatabase{
         c.close();
         return "ERROR: Incorrect password!";
       }
-
+      
       stmt.close();
       rs.close();
       c.commit();
       c.close();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.err.println("signin(): "+e.getClass().getName() + ": " + e.getMessage() );
       System.exit(1);
     }
     return null;
-  }
-  
-  // Return uid if found; return -1 if no such user exists.
-  private static String getName(int uid){
-    Connection c = null;
-    Statement stmt = null;
-    try {
-      Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection(dbURL);
-      c.setAutoCommit(false);
-      stmt = c.createStatement();
-
-      String query="SELECT * FROM USERS WHERE UID="+uid+";";
-      ResultSet rs = stmt.executeQuery(query);
-
-      if ( rs.next() ) {
-        String uname=rs.getString("NAME");
-        rs.close();
-        stmt.close();
-        c.close();
-        return uname;
-      }
-    } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      System.exit(1);
-    }
-    return null;
-  }
-  
-  // Return uid if found; return -1 if no such user exists.
-  private static int getUID(String username){
-    Connection c = null;
-    Statement stmt = null;
-    try {
-      Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection(dbURL);
-      c.setAutoCommit(false);
-      stmt = c.createStatement();
-
-      String query="SELECT * FROM USERS WHERE NAME='"+username+"';";
-      ResultSet rs = stmt.executeQuery(query);
-
-      if ( rs.next() ) {
-        int uid=rs.getInt("UID");
-        rs.close();
-        stmt.close();
-        c.close();
-        return uid;
-      }
-    } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      System.exit(1);
-    }
-    return -1;
   }
   
   // Save score for user.
   public static void saveScoreForUser(String username, int score){
-    int uid=getUID(username);
+    createTable();  
+    
+    int uid=-1;
     Connection c = null;
     Statement stmt = null;
     try {
@@ -214,13 +163,20 @@ public class DungeonDatabase{
       c = DriverManager.getConnection(dbURL);
       c.setAutoCommit(false);
       stmt = c.createStatement();
-      String query="SELECT UID FROM USERS ORDER BY UID DESC;";
+      
+      String query="SELECT * FROM USERS WHERE NAME='"+username+"';";
       ResultSet rs = stmt.executeQuery(query);
+      if ( rs.next() ) {
+        uid=rs.getInt("UID");
+      }
+      
+      query="SELECT UID FROM USERS ORDER BY UID DESC;";
+      rs = stmt.executeQuery(query);
       int sid=0;
       if ( rs.next() ) {
         sid=rs.getInt("SID")+1;
       }
-
+      
       String insert = String.format("INSERT INTO USERS (SID,SCORE,UID) VALUES (%d, %d, %d);",
                                     sid, score, uid); 
       stmt.executeUpdate(insert);
@@ -229,77 +185,94 @@ public class DungeonDatabase{
       c.commit();
       c.close();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.err.println("saveScoreForUser(): "+e.getClass().getName() + ": " + e.getMessage() );
       System.exit(1);
     }
   }
   
   public static Object[] getGlobalTopScores(){
+    createTable();  
     Object[] res=new Object[2];
     int[] scores=new int[5];
+    int[] uids=new int[5];
     String[] names=new String[5];
+    for(int i=0;i<5;i++)
+      names[i]="";
     res[0]=scores;
     res[1]=names;
     
     Connection c=null;
     Statement stmt=null;
-    String dbpassword=null;
     try {
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection(dbURL);
       c.setAutoCommit(false);
       stmt = c.createStatement();
-
+      
       String query="SELECT * FROM SCORES ORDER BY SCORE DESC;";
       ResultSet rs = stmt.executeQuery(query);
-
+      
       int i=0;
       while ( rs.next() && i<5 ) {
         int uid=rs.getInt("UID");
         int score=rs.getInt("SCORE");
         scores[i]=score;
-        names[i++]=getName(uid);
+        uids[i++]=uid;
       }
-
+      
+      for(int j=0;j<i;j++){
+        query="SELECT * FROM USERS WHERE UID="+uids[j]+";";
+        rs = stmt.executeQuery(query);
+        if ( rs.next() ) {
+          names[j]=rs.getString("NAME");
+        }
+      }
+      
       stmt.close();
       rs.close();
       c.commit();
       c.close();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      //System.exit(1);
+      System.err.println("getGlobalTopScores(): "+e.getClass().getName() + ": " + e.getMessage() );
+      System.exit(1);
     }
     return res;
   }
   
   public static int[] getTopScoresForUser(String username){
+    createTable();  
     int[] scores=new int[5];
-    int uid=getUID(username);
+    int uid=-1;
     
     Connection c=null;
     Statement stmt=null;
-    String dbpassword=null;
     try {
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection(dbURL);
       c.setAutoCommit(false);
       stmt = c.createStatement();
-
-      String query=String.format("SELECT SCORE FROM SCORES WHERE UID=%d ORDER BY SCORE DESC;",uid);
+      
+      String query="SELECT * FROM USERS WHERE NAME='"+username+"';";
       ResultSet rs = stmt.executeQuery(query);
-
+      if ( rs.next() ) {
+        uid=rs.getInt("UID");
+      }
+      
+      query=String.format("SELECT SCORE FROM SCORES WHERE UID=%d ORDER BY SCORE DESC;",uid);
+      rs = stmt.executeQuery(query);
+      
       int i=0;
       while ( rs.next() && i<5) {
         int score=rs.getInt("SCORE");
         scores[i++]=score;
       }
-
+      
       stmt.close();
       rs.close();
       c.commit();
       c.close();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.err.println("getTopScoresForUser(): "+e.getClass().getName() + ": " + e.getMessage() );
       System.exit(1);
     }
     return scores;
@@ -325,9 +298,6 @@ public class DungeonDatabase{
     return null;
   }
   
-  
-  
-  
   public static void main(String[] args){
     String err =DungeonDatabase.signup("meguyan","abcde12");
     if(err!=null){
@@ -335,7 +305,7 @@ public class DungeonDatabase{
     }
     err=DungeonDatabase.signin("meguyan","abcde12");
     if(err==null){
-     System.out.println("Successfully signed in!"); 
+      System.out.println("Successfully signed in!"); 
     }
   }
   
