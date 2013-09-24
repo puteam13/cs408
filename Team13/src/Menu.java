@@ -388,6 +388,14 @@ public class Menu implements ActionListener {
     Object obj=e.getSource();
     // Components in maincomp
     if(obj==playButton){
+      if(easy.isSelected()){
+    	  Global.difficulty=Global.Easy;
+      }else if(medium.isSelected()){
+    	  Global.difficulty=Global.Medium;
+      }else{
+    	  Global.difficulty=Global.Hard;
+      }
+      
       game = new MainFrame();
       game.f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
       //frame.setVisible(false);

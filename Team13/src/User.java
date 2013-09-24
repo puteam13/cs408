@@ -33,8 +33,8 @@ public class User {
   
   // Sign up: check if a username has correct formats. If correct, return null; else return error information.
   private static String checkFormatForUsername(String username){
-    if(username.length()<5 || username.length()>14){
-      return "Username must have length between 5 and 14.";
+    if(username.length()<5 || username.length()>25){
+      return "Username must have length between 5 and 25.";
     }else if(!Character.isLetter(username.charAt(0))){
       return "Username must start with a letter.";
     }
@@ -44,7 +44,7 @@ public class User {
   // Sign up: check if a password has correct formats. If correct, return null; else return error information.
   private static String checkFormatForPassword(String password){
     if(password.length()<5 || password.length()>14){
-      return "Password must have length between 5 and 14.";
+      return "Password must have length between 5 and 25.";
     }
     return null;
   }
