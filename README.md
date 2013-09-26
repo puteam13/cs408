@@ -26,4 +26,15 @@ https://github.com/puteam13/cs408/
 * Incremental Testing and Regression Testing:
   * IncrementalandRegressionTesting.pdf
 
+* Executable file name:
+  * 'Dungeon_Explorer'
+
+* Instruction file name:
+  * Instructions.pdf
+
+* Defect log report:
+  * defects.xlsx 
+
+
+
 

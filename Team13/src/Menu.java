@@ -32,8 +32,8 @@ public class Menu implements ActionListener {
   
   // Components in Signcomp.
   JPanel signupPanel,signinPanel;
-  JLabel usernameLabels[],passwordLabels[];
-  JTextField usernameFields[],passwordFields[];
+  JLabel usernameLabels[],passwordLabels[],confirmPasswordLabel;
+  JTextField usernameFields[],passwordFields[],confirmPasswordField;
   JButton signup,signin,cancelButtons[];
   
   public Menu() {
@@ -188,6 +188,8 @@ public class Menu implements ActionListener {
       usernameFields[i]=new JTextField(30);
       passwordFields[i]=new JTextField(30);
     }
+    confirmPasswordLabel=new JLabel("Confirm Password:");
+    confirmPasswordField=new JTextField(30);
     
     signup=new JButton("Sign up");
     signin=new JButton("Sign in");
@@ -200,12 +202,14 @@ public class Menu implements ActionListener {
     signupPanel.add(usernameFields[0]);
     signupPanel.add(passwordLabels[0]);
     signupPanel.add(passwordFields[0]);
+    signupPanel.add(confirmPasswordLabel);
+    signupPanel.add(confirmPasswordField);
     signupPanel.add(cancelButtons[0]);
     signupPanel.add(signup);
     
-    SpringUtilities.makeCompactGrid(signupPanel, 3, 2, //rows, cols
+    SpringUtilities.makeCompactGrid(signupPanel, 4, 2, //rows, cols
                                     20, 50,        //initX, initY
-                                    50, 150);       //xPad, yPad
+                                    50, 100);       //xPad, yPad
     
     signinPanel.setLayout(new SpringLayout());
     signinPanel.add(usernameLabels[1]);
