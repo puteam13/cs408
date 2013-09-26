@@ -27,7 +27,7 @@ https://github.com/puteam13/cs408/
   * IncrementalandRegressionTesting.pdf
 
 * Executable file name:
-  * 'Dungeon_Explorer'
+  * Dungeon_Explorer
 
 * Instruction file name:
   * Instructions.pdf
