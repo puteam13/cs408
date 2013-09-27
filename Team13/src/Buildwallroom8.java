@@ -8,7 +8,7 @@ public Buildwallroom8(){
   setwall(i, Global.level_size - 1);
  }
  for (int j = 0; j < Global.level_size; j++) {
-  if (j != 1)
+  if (j != 2)
    setwall(0, j);
   if (j != Global.level_size - 2)
    setwall(Global.level_size - 1, j);

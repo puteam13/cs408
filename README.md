@@ -33,7 +33,7 @@ https://github.com/puteam13/cs408/
   * Instructions.pdf
 
 * Defect log report:
-  * defects.xlsx 
+  * Defect Log.pdf
 
 
 

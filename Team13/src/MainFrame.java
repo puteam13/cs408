@@ -132,7 +132,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 	//	Global.Hero = new Charactermodel();
 
 		// Global.difficulty = 10;
-		Global.LEVEL = 2;
+		Global.LEVEL = 1;
 		t = new Timer( 20, this);
 		t.start();
 	}
@@ -163,7 +163,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 		menuLife.setEnabled(false);
 		menuScore1.setEnabled(false);
 
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(600, 600);
 		f.setJMenuBar(Menub);
 
@@ -182,6 +182,9 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 		this.setBackground(Color.GRAY);
 		// g.setColor(Color.green);
 		g.drawOval(0, 0, 20, 20);
+		// g.drawRoundRect(100, 10, 80, 30, 15, 15);
+	//	g.drawImage(E1.poop_image, 0, 20, null);
+	//	drawDoor(g, door1, 20, 0);
 		drawmap(g);
 		drawstart(g);
 		drawexit(g);
@@ -210,8 +213,8 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 			drawenemy(g, E3);
 			drawenemy(g, E4);
 			drawenemy(g, E5);
-			enemymovelogic(E3);
-			enemymovelogic(E5);
+		//	enemymovelogic(E3);
+			//enemymovelogic(E5);
 
 			collision(E3, Global.Hero);
 			collision(E4, Global.Hero);
@@ -410,6 +413,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 		}
 
 		// drawenemy(g, E1);
+		//repaint();
 
 		drawcharacter(g);
 
@@ -609,7 +613,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 				E.velx = -E.velx;
 
 			}
-			if (E.y < 0 || E.y > (Global.level_size - 1) * 20) {
+			if ( E.y > (Global.level_size - 1) * 20) {
 				E.vely = -E.vely;
 			}
 			if (E.velx > 0 && Global.grid[(E.x + 20) / 20][E.y / 20] == Global.WALL) {
@@ -766,7 +770,7 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 		int c = e.getKeyCode();
 		// e.getk
 		if (Global.Hero.x < 0) {
-			Global.Hero.x = 0;
+			//Global.Hero.x = 0;
 		}
 		if (Global.Hero.y < 0) {
 			Global.Hero.y = 0;
@@ -827,10 +831,10 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 
 					if (Global.LEVEL > 10) {
 						System.out.println("Game Over");
-						JOptionPane.showMessageDialog(null,
+						/*JOptionPane.showMessageDialog(null,
 								"Congratulations!Your final score is "
 										+ Global.Score, "You Win!",
-								JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.INFORMATION_MESSAGE);*/
 						Global.LEVEL = 0;
 
 					//	user.currScore = Global.Score;
@@ -876,12 +880,12 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 
 	}
 
-//	public static void main(String[] agrs) {
-//		User User = null;
-//	JFrame F = null;
-//		MainFrame f = new MainFrame(User, F);
+	//public static void main(String[] agrs) {
+	//	User User = null;
+	//JFrame F = null;
+	//	MainFrame f = new MainFrame(User, F);
 //
-//	}
+	//}
 
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -890,8 +894,8 @@ public class MainFrame extends JPanel implements ActionListener, KeyListener,
 			frame.setVisible(true);
 			user.currScore = Global.Score;
 			user.saveScoreToDatabase();
-
 			f.dispose();
+			//f.setVisible(false);
 			Global.Score = 0;
 
 		} else if (arg0.getSource() == menuScore) {

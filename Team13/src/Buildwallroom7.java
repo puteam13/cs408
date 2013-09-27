@@ -84,7 +84,7 @@ public Buildwallroom7(){
  setwall(11, 13);
  setwall(13, 13);
  setwall(3, 14);
- //setwall(6, 14);
+ setwall(6, 14);
  setwall(11, 14);
  setwall(13, 14);
  setwall(15, 14);
@@ -93,7 +93,7 @@ public Buildwallroom7(){
  setwall(3, 15);
  for (int i = 5; i <= 9; i++)
   setwall(i, 15);
- //setwall(11, 15);
+ setwall(11, 15);//   HERE IS BUG
  setwall(13, 15);
  setwall(6, 16);
  setwall(11, 16);

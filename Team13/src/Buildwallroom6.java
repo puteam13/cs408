@@ -64,7 +64,7 @@ public Buildwallroom6(){
  setwall(9, 8);
  setwall(11, 8);
  setwall(13, 8);
- //setwall(14, 8);
+ setwall(14, 8);//HERE IS BUG
  setwall(2, 9);
  setwall(4, 9);
  setwall(7, 9);

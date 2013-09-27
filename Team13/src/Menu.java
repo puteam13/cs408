@@ -127,8 +127,8 @@ public class Menu implements ActionListener {
     medium=new JRadioButton("Medium");
     hard=new JRadioButton("Hard");
     //levelGroup.add(easy);
-    //levelGroup.add(medium);
-    //levelGroup.add(hard);
+   // levelGroup.add(medium);
+  //  levelGroup.add(hard);
     
     levelPanel=new JPanel();
     levelPanel.setLayout(new SpringLayout());
@@ -231,7 +231,7 @@ public class Menu implements ActionListener {
     signcomp.addTab("Sign up",signupPanel);
     signcomp.addTab("Sign in",signinPanel);
     
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
   }
   
@@ -393,7 +393,7 @@ public class Menu implements ActionListener {
     // Components in maincomp
     if(obj==playButton){
       game = new MainFrame(user, frame);
-      game.f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+      //game.f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
       //frame.setVisible(false);
     }else if(obj==switchUserButton){
       if(game!=null){
