@@ -38,5 +38,8 @@ https://github.com/puteam13/cs408/
 * Test Plan for Vormund:
   * TestPlanForVormund.pdf
 
+* Defect Log for Vormund:
+  * Vormund Defect Log.pdf
+
 
 
