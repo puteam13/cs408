@@ -41,5 +41,6 @@ https://github.com/puteam13/cs408/
 * Defect Log for Vormund:
   * Vormund Defect Log.pdf
 
-
+* Test Plan for Testify:
+  * TestPlanForTestify.pdf
 
