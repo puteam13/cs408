@@ -44,3 +44,6 @@ https://github.com/puteam13/cs408/
 * Test Plan for Testify:
   * TestPlanForTestify.pdf
 
+* Defect Log for Testify:
+  * Testify Defect Log.pdf
+
