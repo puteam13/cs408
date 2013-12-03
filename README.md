@@ -47,3 +47,6 @@ https://github.com/puteam13/cs408/
 * Defect Log for Testify:
   * Testify Defect Log.pdf
 
+* White box Testing for Testify:
+  * Testify Final Defect Log - Sheet1.pdf
+
